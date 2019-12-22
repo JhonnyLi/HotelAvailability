@@ -13,6 +13,9 @@ namespace HotelAvailabilityApiService
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             services.AddSingleton<ISecretsService, SecretsService>();
+            services.AddScoped<IIntentService, IntentService>();
+            services.AddSingleton<IHttpService, HttpService>();
+            services.AddScoped<IHotelService, HotelService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
