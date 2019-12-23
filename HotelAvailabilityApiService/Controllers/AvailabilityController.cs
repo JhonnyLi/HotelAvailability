@@ -1,7 +1,6 @@
 ﻿using HotelAvailabilityApiService.Models.Request;
 using HotelAvailabilityApiService.Models.Response;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace HotelAvailabilityApiService.Controllers
 {
@@ -20,7 +19,7 @@ namespace HotelAvailabilityApiService.Controllers
             var response = new IntentResponse();
             response.payload = new Payload
             {
-                google = new Google
+                google = new HotelAvailabilityApiService.Models.Response.Google
                 {
                     expectUserResponse = false,
                     richResponse = new Richresponse
