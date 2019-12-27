@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace HotelAvailabilityApiService.Services
+﻿namespace HotelAvailabilityApiService.Services
 {
-    public class HotelService : IHotelService
-    {
-    }
+    public class HotelService : IHotelService { }
 }

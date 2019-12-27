@@ -1,31 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace HotelAvailabilityApiService.Services
 {
     public class HttpService : IHttpService
     {
         private readonly HttpClient _client;
+        private readonly ISecretsService _secrets;
         public HttpService(ISecretsService secrets)
         {
+            _secrets = secrets;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             _client = new HttpClient();
-            _client.BaseAddress = new Uri(secrets.GetSecret("ApiBaseUrl"));
-            _client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            _client.DefaultRequestHeaders.Add(secrets.GetSecret("AuthHeader"), secrets.GetSecret("ApiPrimaryKey"));
+            SetDefaultHeaders();
         }
         public Task<HttpResponse> GetAsync<T>(string url)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
 
         public Task<HttpResponse> PostAsync<T>(string url, string content)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
 
         public void SetBaseUrl(string url)
         {
@@ -34,7 +30,14 @@ namespace HotelAvailabilityApiService.Services
 
         public void SetHeader(string key, string value)
         {
-            _client.DefaultRequestHeaders.Add(key,value);
+            _client.DefaultRequestHeaders.Add(key, value);
+        }
+
+        private void SetDefaultHeaders()
+        {
+            _client.BaseAddress = new Uri(_secrets.GetSecret("ApiBaseUrl"));
+            _client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            _client.DefaultRequestHeaders.Add(_secrets.GetSecret("AuthHeader"), _secrets.GetSecret("ApiPrimaryKey"));
         }
     }
 }
