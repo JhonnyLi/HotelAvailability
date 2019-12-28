@@ -38,7 +38,6 @@ namespace HotelAvailabilityApiService.Services
 
                 }
             };
-            throw new NotImplementedException();
             return response;
         }
     }

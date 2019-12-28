@@ -14,8 +14,13 @@ namespace HotelAvailabilityApiService.Services
         public SecretsService(IConfiguration config)
         {
             Configuration = config;
-            var (uri, clientCredentials) = InitializeKeyVault();
-            _secretClient = new SecretClient(uri, clientCredentials);
+#if DEBUG
+            var (uri, clientCredentials) = InitializeKeyVaultLocally();
+                _secretClient = new SecretClient(uri, clientCredentials);
+#else
+            var uri = InitializeKeyVault();
+                _secretClient = new SecretClient(uri, new DefaultAzureCredential());
+#endif
         }
         public async Task<string> GetSecretAsync(string keyName)
         {
@@ -28,11 +33,11 @@ namespace HotelAvailabilityApiService.Services
             var secret = _secretClient.GetSecret(keyName);
             return secret.Value.Value.ToString();
         }
-
-        private (Uri uri, ClientCertificateCredential clientCredentials) InitializeKeyVault()
+#if DEBUG
+        private (Uri uri, ClientCertificateCredential clientCredentials) InitializeKeyVaultLocally()
         {
-            var keyvaultUri = new Uri(Configuration["KeyVault:KeyVaultUrl"]);
-            var clientCredentials = new ClientCertificateCredential(Configuration["KeyVault:TenantId"], Configuration["KeyVault:ClientId"], GetCertificate(Configuration["KeyVault:CertThumbPrint"]));
+            var keyvaultUri = new Uri(Configuration["KeyVaultUrl"]);
+            var clientCredentials = new ClientCertificateCredential(Configuration["KeyVaultTenantId"], Configuration["KeyVaultClientId"], GetCertificate(Configuration["CertThumbPrint"]));
             return (keyvaultUri, clientCredentials);
         }
 
@@ -54,5 +59,12 @@ namespace HotelAvailabilityApiService.Services
             }
             return certificate;
         }
+#else
+        private Uri InitializeKeyVault()
+        {
+            var keyvaultUri = new Uri(Configuration["KeyVaultUrl"]);
+            return keyvaultUri;
+        }
+#endif
     }
 }

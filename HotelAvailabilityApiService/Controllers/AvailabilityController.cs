@@ -2,6 +2,7 @@
 using HotelAvailabilityApiService.Models.Response;
 using HotelAvailabilityApiService.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,8 +20,14 @@ namespace HotelAvailabilityApiService.Controllers
         [HttpPost]
         public async Task<JsonResult> Index([FromBody] IntentRequest request)
         {
-            var response = await _intentService.GetIntentResponse(request);
-            return new JsonResult(response);
+            try
+            {
+                var response = await _intentService.GetIntentResponse(request);
+                return new JsonResult(response);
+            }catch(Exception ex)
+            {
+                return new JsonResult(ex);
+            }
         }
     }
 }

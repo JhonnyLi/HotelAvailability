@@ -22,12 +22,12 @@ namespace HotelAvailabilityApiService
             services.AddScoped<IIntentService, IntentService>();
             services.AddSingleton<IHttpService, HttpService>();
             services.AddScoped<IHotelService, HotelService>();
+            services.AddApplicationInsightsTelemetry();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseRouting();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
