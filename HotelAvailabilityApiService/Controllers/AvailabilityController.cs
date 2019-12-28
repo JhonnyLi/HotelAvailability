@@ -1,45 +1,26 @@
 ﻿using HotelAvailabilityApiService.Models.Request;
 using HotelAvailabilityApiService.Models.Response;
+using HotelAvailabilityApiService.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HotelAvailabilityApiService.Controllers
 {
     [Route("api/[controller]")]
     public class AvailabilityController : ControllerBase
     {
-        [HttpPost]
-        public JsonResult Index([FromBody] IntentRequest request)
+        private readonly IIntentService _intentService;
+        public AvailabilityController(IIntentService intentService)
         {
-            var response = GetIntentResponse(request);
-            return new JsonResult(response);
+            _intentService = intentService;
         }
 
-        private static IntentResponse GetIntentResponse(IntentRequest request)
+        [HttpPost]
+        public async Task<JsonResult> Index([FromBody] IntentRequest request)
         {
-            var response = new IntentResponse();
-            response.payload = new Payload
-            {
-                google = new Google
-                {
-                    expectUserResponse = false,
-                    richResponse = new Richresponse
-                    {
-                        items = new Item[]
-                        {
-                            new Item
-                            {
-                                simpleResponse = new Simpleresponse
-                                {
-                                    textToSpeech = "Det finns rum lediga."
-                                }
-                            }
-                        }
-                    }
-
-                }
-            };
-            return response;
+            var response = await _intentService.GetIntentResponse(request);
+            return new JsonResult(response);
         }
     }
 }
