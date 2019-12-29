@@ -36,6 +36,7 @@ namespace HotelAvailabilityApiService.Services
         private void SetDefaultHeaders()
         {
             _client.BaseAddress = new Uri(_secrets.GetSecret("ApiBaseUrl"));
+            _client.DefaultRequestHeaders.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             _client.DefaultRequestHeaders.Add(_secrets.GetSecret("AuthHeader"), _secrets.GetSecret("ApiPrimaryKey"));
         }

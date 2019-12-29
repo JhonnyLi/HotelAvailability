@@ -13,6 +13,12 @@ namespace HotelAvailabilityApiService.Services
         }
         public async Task<IntentResponse> GetIntentResponse(IntentRequest request)
         {
+            _httpClient.SetHeader("Test", "TestValue");
+            return CreateResponse(request);
+        }
+
+        private static IntentResponse CreateResponse(IntentRequest request)
+        {
             var response = new IntentResponse();
             response.payload = new Payload
             {
@@ -29,10 +35,16 @@ namespace HotelAvailabilityApiService.Services
                                 {
                                     textToSpeech = "Det finns rum lediga."
                                 }
+                            },
+                            new Item
+                            {
+                                simpleResponse = new Simpleresponse
+                                {
+                                    textToSpeech = "Det finns rum lediga här med."
+                                }
                             }
                         }
                     }
-
                 }
             };
             return response;

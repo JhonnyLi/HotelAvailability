@@ -16,7 +16,7 @@ namespace HotelAvailabilityApiService.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> Index([FromBody] IntentRequest request)
+        public async Task<JsonResult> RequestIntentResponse([FromBody] IntentRequest request)
         {
             try
             {
