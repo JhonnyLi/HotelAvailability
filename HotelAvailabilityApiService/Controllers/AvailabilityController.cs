@@ -1,4 +1,4 @@
-﻿using HotelAvailabilityApiService.Models.Request;
+using HotelAvailabilityApiService.Models.Request;
 using HotelAvailabilityApiService.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
