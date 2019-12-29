@@ -33,14 +33,14 @@ namespace HotelAvailabilityApiService.Services
                             {
                                 simpleResponse = new Simpleresponse
                                 {
-                                    textToSpeech = "Det finns rum lediga."
+                                    textToSpeech = request.queryResult.fulfillmentText
                                 }
                             },
                             new Item
                             {
                                 simpleResponse = new Simpleresponse
                                 {
-                                    textToSpeech = "Det finns rum lediga här med."
+                                    textToSpeech = request.queryResult.queryText
                                 }
                             }
                         }
