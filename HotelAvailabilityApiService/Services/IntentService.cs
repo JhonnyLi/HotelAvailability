@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using HotelAvailabilityApiService.Models.Request;
 using HotelAvailabilityApiService.Models.Response;
+using System.Threading.Tasks;
 
 namespace HotelAvailabilityApiService.Services
 {
@@ -15,6 +12,12 @@ namespace HotelAvailabilityApiService.Services
             _httpClient = httpClient;
         }
         public async Task<IntentResponse> GetIntentResponse(IntentRequest request)
+        {
+            _httpClient.SetHeader("Test", "TestValue");
+            return CreateResponse(request);
+        }
+
+        private static IntentResponse CreateResponse(IntentRequest request)
         {
             var response = new IntentResponse();
             response.payload = new Payload
@@ -30,15 +33,20 @@ namespace HotelAvailabilityApiService.Services
                             {
                                 simpleResponse = new Simpleresponse
                                 {
-                                    textToSpeech = "Det finns rum lediga."
+                                    textToSpeech = request.queryResult.fulfillmentText
+                                }
+                            },
+                            new Item
+                            {
+                                simpleResponse = new Simpleresponse
+                                {
+                                    textToSpeech = request.queryResult.queryText
                                 }
                             }
                         }
                     }
-
                 }
             };
-            throw new NotImplementedException();
             return response;
         }
     }

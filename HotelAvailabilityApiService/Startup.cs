@@ -14,7 +14,7 @@ namespace HotelAvailabilityApiService
         {
             Configuration = configuration;
         }
-        public void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
 
@@ -22,12 +22,12 @@ namespace HotelAvailabilityApiService
             services.AddScoped<IIntentService, IntentService>();
             services.AddSingleton<IHttpService, HttpService>();
             services.AddScoped<IHotelService, HotelService>();
+            services.AddApplicationInsightsTelemetry();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseRouting();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
