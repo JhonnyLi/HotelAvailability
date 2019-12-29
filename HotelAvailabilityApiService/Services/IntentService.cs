@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HotelAvailabilityApiService.Models.Request;
+﻿using HotelAvailabilityApiService.Models.Request;
 using HotelAvailabilityApiService.Models.Response;
+using System.Threading.Tasks;
 
 namespace HotelAvailabilityApiService.Services
 {
