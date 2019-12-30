@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using Newtonsoft.Json;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -17,10 +19,13 @@ namespace HotelAvailabilityApiService.Services
             _client = new HttpClient();
             SetDefaultHeaders();
         }
-        public Task<HttpResponse> GetAsync<T>(string url)
-            => throw new NotImplementedException();
+        public async Task<T> GetAsync<T>(string url)
+        {
+            var result = await _client.GetAsync(url).ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<T>(await result.Content.ReadAsStringAsync());
+        }
 
-        public Task<HttpResponse> PostAsync<T>(string url, string content)
+        public Task<T> PostAsync<T>(string url, string content)
             => throw new NotImplementedException();
 
         public void SetBaseUrl(string url)

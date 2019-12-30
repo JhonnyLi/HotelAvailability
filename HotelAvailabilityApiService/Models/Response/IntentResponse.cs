@@ -89,12 +89,6 @@ namespace HotelAvailabilityApiService.Models.Response
     {
         public string name { get; set; }
         public int lifespanCount { get; set; }
-        public Parameters1 parameters { get; set; }
+        public Parameters parameters { get; set; }
     }
-
-    public class Parameters1
-    {
-        public string param { get; set; }
-    }
-
 }
