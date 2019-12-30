@@ -8,7 +8,7 @@ namespace HotelAvailabilityApiService.Services
         void SetBaseUrl(string url);
         void SetHeader(string key, string value);
 
-        Task<HttpResponse> GetAsync<T>(string url);
-        Task<HttpResponse> PostAsync<T>(string url, string content);
+        Task<T> GetAsync<T>(string url);
+        Task<T> PostAsync<T>(string url, string content);
     }
 }

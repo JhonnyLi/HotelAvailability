@@ -1,3 +1,4 @@
+using HotelAvailabilityApiService.Models.Hotels;
 using HotelAvailabilityApiService.Models.Request;
 using HotelAvailabilityApiService.Models.Response;
 using System.Threading.Tasks;
@@ -6,41 +7,48 @@ namespace HotelAvailabilityApiService.Services
 {
     public class IntentService : IIntentService
     {
-        private readonly IHttpService _httpClient;
-        public IntentService(IHttpService httpClient)
+        private readonly IHotelService _hotelService;
+        public IntentService(IHotelService hotelService)
         {
-            _httpClient = httpClient;
+            _hotelService = hotelService;
         }
         public async Task<IntentResponse> GetIntentResponse(IntentRequest request)
         {
-            _httpClient.SetHeader("Test", "TestValue");
-            return CreateResponse(request);
+            var hotel = await _hotelService.GetHotelByNameAsync(request.QueryResult.Parameters.Hotels);
+            return CreateResponse(hotel);
         }
 
-        private static IntentResponse CreateResponse(IntentRequest request)
+        private static IntentResponse CreateResponse(Hotel hotel)
         {
-            var response = new IntentResponse();
-            response.payload = new Payload
+            var response = new IntentResponse
             {
-                google = new Google
+                fulfillmentText = "Det finns lediga rum på " + hotel.Attributes.Name,
+                fulfillmentMessages = new Models.Response.Fulfillmentmessage[]
                 {
-                    expectUserResponse = false,
-                    richResponse = new Richresponse
+                    new Models.Response.Fulfillmentmessage
                     {
-                        items = new Item[]
+                        card = new Card
                         {
-                            new Item
+                            title = hotel.Attributes.Name,
+                            subtitle = "Rum tillgängliga"
+                        }
+                    }
+                },
+                payload = new Models.Response.Payload
+                {
+                    google = new Google
+                    {
+                        expectUserResponse = false,
+                        richResponse = new Richresponse
+                        {
+                            items = new Item[]
                             {
-                                simpleResponse = new Simpleresponse
+                                new Item
                                 {
-                                    textToSpeech = request.queryResult.fulfillmentText
-                                }
-                            },
-                            new Item
-                            {
-                                simpleResponse = new Simpleresponse
-                                {
-                                    textToSpeech = request.queryResult.queryText
+                                    simpleResponse = new Simpleresponse
+                                    {
+                                        textToSpeech = "Det finns lediga rum på " + hotel.Attributes.Name
+                                    }
                                 }
                             }
                         }
