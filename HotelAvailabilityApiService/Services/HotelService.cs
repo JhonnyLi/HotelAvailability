@@ -18,7 +18,7 @@ namespace HotelAvailabilityApiService.Services
 
         public async Task<Hotel> GetHotelByNameAsync(string name)
         {
-            var hotels = await GetHotelsAsync();
+            var hotels = await GetHotelsAsync().ConfigureAwait(false);
             return hotels.Data.FirstOrDefault(hn => hn.Attributes.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
