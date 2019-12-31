@@ -1,94 +1,122 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace HotelAvailabilityApiService.Models.Response
 {
 
     public class IntentResponse
     {
-        public string fulfillmentText { get; set; }
-        public Fulfillmentmessage[] fulfillmentMessages { get; set; }
-        public string source { get; set; }
-        public Payload payload { get; set; }
-        public Outputcontext[] outputContexts { get; set; }
-        public Followupeventinput followupEventInput { get; set; }
+        [JsonPropertyName("fulfillmentText")]
+        public string FulfillmentText { get; set; }
+        [JsonPropertyName("fulfillmentMessages")]
+        public IList<Fulfillmentmessage> FulfillmentMessages { get; set; }
+        [JsonPropertyName("source")]
+        public string Source { get; set; }
+        [JsonPropertyName("payload")]
+        public Payload Payload { get; set; }
+        [JsonPropertyName("outputContexts")]
+        public IList<Outputcontext> OutputContexts { get; set; }
+        [JsonPropertyName("followupEventInput")]
+        public Followupeventinput FollowupEventInput { get; set; }
     }
 
     public class Payload
     {
-        public Google google { get; set; }
-        public Facebook facebook { get; set; }
-        public Slack slack { get; set; }
+        [JsonPropertyName("google")]
+        public Google Google { get; set; }
+        [JsonPropertyName("facebook")]
+        public Facebook Facebook { get; set; }
+        [JsonPropertyName("slack")]
+        public Slack Slack { get; set; }
     }
 
     public class Google
     {
-        public bool expectUserResponse { get; set; }
-        public Richresponse richResponse { get; set; }
+        [JsonPropertyName("expectUserResponse")]
+        public bool ExpectUserResponse { get; set; }
+        [JsonPropertyName("richResponse")]
+        public Richresponse RichResponse { get; set; }
     }
 
     public class Richresponse
     {
-        public Item[] items { get; set; }
+        [JsonPropertyName("items")]
+        public IList<Item> Items { get; set; }
     }
 
     public class Item
     {
-        public Simpleresponse simpleResponse { get; set; }
+        [JsonPropertyName("simpleResponse")]
+        public Simpleresponse SimpleResponse { get; set; }
     }
 
     public class Simpleresponse
     {
-        public string textToSpeech { get; set; }
+        [JsonPropertyName("textToSpeech")]
+        public string TextToSpeech { get; set; }
     }
 
     public class Facebook
     {
-        public string text { get; set; }
+        [JsonPropertyName("text")]
+        public string Text { get; set; }
     }
 
     public class Slack
     {
-        public string text { get; set; }
+        [JsonPropertyName("text")]
+        public string Text { get; set; }
     }
 
     public class Followupeventinput
     {
-        public string name { get; set; }
-        public string languageCode { get; set; }
-        public Parameters parameters { get; set; }
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+        [JsonPropertyName("languageCode")]
+        public string LanguageCode { get; set; }
+        [JsonPropertyName("parameters")]
+        public Parameters Parameters { get; set; }
     }
 
     public class Parameters
     {
-        public string param { get; set; }
+        [JsonPropertyName("param")]
+        public string Param { get; set; }
     }
 
     public class Fulfillmentmessage
     {
-        public Card card { get; set; }
+        [JsonPropertyName("card")]
+        public Card Card { get; set; }
     }
 
     public class Card
     {
-        public string title { get; set; }
-        public string subtitle { get; set; }
-        public string imageUri { get; set; }
-        public Button[] buttons { get; set; }
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
+        [JsonPropertyName("subtitle")]
+        public string Subtitle { get; set; }
+        [JsonPropertyName("imageUri")]
+        public string ImageUri { get; set; }
+        [JsonPropertyName("buttons")]
+        public IList<Button> Buttons { get; set; }
     }
 
     public class Button
     {
-        public string text { get; set; }
-        public string postback { get; set; }
+        [JsonPropertyName("text")]
+        public string Text { get; set; }
+        [JsonPropertyName("postback")]
+        public string Postback { get; set; }
     }
 
     public class Outputcontext
     {
-        public string name { get; set; }
-        public int lifespanCount { get; set; }
-        public Parameters parameters { get; set; }
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+        [JsonPropertyName("lifespanCount")]
+        public int LifespanCount { get; set; }
+        [JsonPropertyName("parameters")]
+        public Parameters Parameters { get; set; }
     }
 }

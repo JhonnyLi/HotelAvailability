@@ -22,32 +22,32 @@ namespace HotelAvailabilityApiService.Services
         {
             var response = new IntentResponse
             {
-                fulfillmentText = "Det finns lediga rum på " + hotel.Attributes.Name,
-                fulfillmentMessages = new Models.Response.Fulfillmentmessage[]
+                FulfillmentText = "Det finns lediga rum på " + hotel.Attributes.Name,
+                FulfillmentMessages = new Models.Response.Fulfillmentmessage[]
                 {
                     new Models.Response.Fulfillmentmessage
                     {
-                        card = new Card
+                        Card = new Card
                         {
-                            title = hotel.Attributes.Name,
-                            subtitle = "Rum tillgängliga"
+                            Title = hotel.Attributes.Name,
+                            Subtitle = "Rum tillgängliga"
                         }
                     }
                 },
-                payload = new Models.Response.Payload
+                Payload = new Models.Response.Payload
                 {
-                    google = new Google
+                    Google = new Google
                     {
-                        expectUserResponse = false,
-                        richResponse = new Richresponse
+                        ExpectUserResponse = false,
+                        RichResponse = new Richresponse
                         {
-                            items = new Item[]
+                            Items = new Item[]
                             {
                                 new Item
                                 {
-                                    simpleResponse = new Simpleresponse
+                                    SimpleResponse = new Simpleresponse
                                     {
-                                        textToSpeech = "Det finns lediga rum på " + hotel.Attributes.Name
+                                        TextToSpeech = "Det finns lediga rum på " + hotel.Attributes.Name
                                     }
                                 }
                             }
