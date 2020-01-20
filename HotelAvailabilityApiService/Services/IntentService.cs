@@ -1,6 +1,7 @@
 using HotelAvailabilityApiService.Models.Hotels;
 using HotelAvailabilityApiService.Models.Request;
 using HotelAvailabilityApiService.Models.Response;
+using System;
 using System.Threading.Tasks;
 
 namespace HotelAvailabilityApiService.Services
@@ -14,29 +15,30 @@ namespace HotelAvailabilityApiService.Services
         }
         public async Task<IntentResponse> GetIntentResponse(IntentRequest request)
         {
-            var hotel = await _hotelService.GetHotelByNameAsync(request.QueryResult.Parameters.Hotels);
-            return CreateResponse(hotel);
+            var hotel = await _hotelService.GetHotelByNameAsync(request.QueryResult.Parameters.Hotel);
+            return CreateResponse(hotel, request.QueryResult.Parameters.Date, request.QueryResult.Parameters.LeavingDate);
         }
 
-        private static IntentResponse CreateResponse(Hotel hotel)
+        private static IntentResponse CreateResponse(Hotel hotel, DateTime checkinDate, DateTime checkoutDate)
         {
+            var responseMessage = $"{hotel.Attributes.Name} has got available rooms during the period you specified.";
             var response = new IntentResponse
             {
-                FulfillmentText = "Det finns lediga rum på " + hotel.Attributes.Name,
+                FulfillmentText = responseMessage,
                 FulfillmentMessages = new Models.Response.Fulfillmentmessage[]
                 {
                     new Models.Response.Fulfillmentmessage
                     {
                         Card = new Card
                         {
-                            Title = hotel.Attributes.Name,
-                            Subtitle = "Rum tillgängliga"
+                            Title = responseMessage,
+                            Subtitle = $"Hotel adress: {hotel.Attributes.Address.StreetAddress}"
                         }
                     }
                 },
                 Payload = new Models.Response.Payload
                 {
-                    Google = new Google
+                    Google = new Models.Response.Google
                     {
                         ExpectUserResponse = false,
                         RichResponse = new Richresponse
@@ -47,7 +49,7 @@ namespace HotelAvailabilityApiService.Services
                                 {
                                     SimpleResponse = new Simpleresponse
                                     {
-                                        TextToSpeech = "Det finns lediga rum på " + hotel.Attributes.Name
+                                        TextToSpeech = responseMessage
                                     }
                                 }
                             }

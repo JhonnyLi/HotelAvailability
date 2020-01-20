@@ -41,6 +41,8 @@ namespace HotelAvailabilityApiService.Models.Hotels
         public string Name { get; set; }
         [JsonPropertyName("address")]
         public Address Address { get; set; }
+        [JsonPropertyName("keywords")]
+        public string[] KeyWords { get; set; }
     }
 
     public class Address
