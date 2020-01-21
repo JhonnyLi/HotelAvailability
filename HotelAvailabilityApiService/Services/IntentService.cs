@@ -2,6 +2,7 @@ using HotelAvailabilityApiService.Models.Availability;
 using HotelAvailabilityApiService.Models.AvailabilityMessageModel;
 using HotelAvailabilityApiService.Models.Request;
 using HotelAvailabilityApiService.Models.Response;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +22,8 @@ namespace HotelAvailabilityApiService.Services
         public async Task<IntentResponse> GetIntentResponse(IntentRequest request)
         {
             var hotel = await _hotelService.GetHotelByNameAsync(request.QueryResult.Parameters.Hotel);
-            var availability = await _availabilityService.GetAvailabilityForHotelByIdAndStartDateAsync(hotel.Id, request.QueryResult.Parameters.Date, request.QueryResult.Parameters.LeavingDate);
+            var parameters = request.QueryResult.Parameters;
+            var availability = await _availabilityService.GetAvailabilityForHotelByIdAndStartDateAsync(hotel.Id, parameters.Date, parameters.LeavingDate, parameters.Adults);
             var messages = CreateResponseMessages(request, availability);
             return CreateResponse(messages);
         }
@@ -33,8 +35,13 @@ namespace HotelAvailabilityApiService.Services
 
             if (roomsAvailable)
             {
-                var roomString = availability.Data.Count == 1 ? "room" : "rooms";
-                model.FulFillmentMessage = $"{model.HotelName} has {availability.Data.Count} {roomString} available between {model.CheckInDate} and {model.CheckoutDate}.";
+                var roomsWithRates = availability.Data.Where(d => d.Attributes.Rates.Any()).ToList();
+                var allRates = roomsWithRates.Select(r => (r, r.Attributes.Rates.First())).ToList();
+                allRates = allRates.OrderBy(o => (int)Math.Round(o.Item2.PricePerNight.LocalCurrency.Amount)).ToList();
+                var (bestRate, pricePerNight) = allRates.First();
+                
+                var roomString = availability.Data.Count == 1 ? "a room" : "rooms";
+                model.FulFillmentMessage = $"{model.HotelName} has {roomString} available between {model.CheckInDate} and {model.CheckoutDate}. The best price is {pricePerNight.PricePerNight.LocalCurrency.Amount}Sek per night.";
                 var cardMessage = new CardMessage
                 {
                     Title = $"{model.HotelName} room availability",

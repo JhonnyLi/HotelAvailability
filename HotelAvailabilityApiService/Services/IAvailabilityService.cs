@@ -6,6 +6,6 @@ namespace HotelAvailabilityApiService.Services
 {
     public interface IAvailabilityService
     {
-        Task<GetAvailabilityResponse> GetAvailabilityForHotelByIdAndStartDateAsync(string id, DateTime checkinDate, DateTime checkoutDate);
+        Task<GetAvailabilityResponse> GetAvailabilityForHotelByIdAndStartDateAsync(string id, DateTime checkinDate, DateTime checkoutDate, double adults);
     }
 }
