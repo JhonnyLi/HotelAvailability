@@ -47,6 +47,8 @@ namespace HotelAvailabilityApiService.Models.Request
         public DateTime Date { get; set; }
         [JsonPropertyName("leavingdate")]
         public DateTime LeavingDate { get; set; }
+        [JsonPropertyName("adults")]
+        public double Adults { get; set; } = 1;
     }
 
     public class DateTimeInfo
