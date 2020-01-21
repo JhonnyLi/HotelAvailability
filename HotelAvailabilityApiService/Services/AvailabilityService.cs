@@ -17,7 +17,9 @@ namespace HotelAvailabilityApiService.Services
 
         public async Task<GetAvailabilityResponse> GetAvailabilityForHotelByIdAndStartDateAsync(string id, DateTime checkinDate,DateTime checkoutDate)
         {
-            var uri = $"{_baseUrl}/availability/availabilities/?language=en&filter[hotel]={id}&filter[checkindate]={checkinDate.ToShortDateString()}&filter[checkoutdate]={checkoutDate.ToShortDateString()}&filter[occupancies]=[1]";
+            var checkinDateString = checkinDate.ToString("yyyy-MM-dd");
+            var checkoutDateString = checkoutDate.ToString("yyy-MM-dd");
+            var uri = $"{_baseUrl}/availability/availabilities/?language=en&filter[hotel]={id}&filter[checkindate]={checkinDateString}&filter[checkoutdate]={checkoutDateString}&filter[occupancies]=[1]";
             var result = await _httpClient.GetAsync<GetAvailabilityResponse>(uri).ConfigureAwait(false);
             return result;
         }
