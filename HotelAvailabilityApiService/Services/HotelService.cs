@@ -1,5 +1,4 @@
 ﻿using HotelAvailabilityApiService.Models.Hotels;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +34,17 @@ namespace HotelAvailabilityApiService.Services
         public async Task<GetHotelsResponse> GetHotelsWithFieldsAsync(List<HotelAttributeFields> attributes = default)
         {
             //TODO: Add logic for getting attributes.
-            var uri = _baseUrl + "/hotel/hotels?language=sv&Fields[hotels]=Name,Keywords";
+            var fields = "Name,Keywords";
+            if (attributes != null || attributes.Any())
+            {
+                fields = string.Empty;
+                foreach(var field in attributes)
+                {
+                    fields += $"{nameof(field)},";
+                }
+                fields.TrimEnd(',');
+            } 
+            var uri = $"{_baseUrl}/hotel/hotels?language=sv&Fields[hotels]={fields}";
             var result = await _httpClient.GetAsync<GetHotelsResponse>(uri).ConfigureAwait(false);
 
             return result;

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HotelAvailabilityApiService.Models.Availability
 {
@@ -108,32 +106,12 @@ namespace HotelAvailabilityApiService.Models.Availability
     public class Pricepernight
     {
         [JsonPropertyName("localCurrency")]
-        public Localcurrency LocalCurrency { get; set; }
+        public CurrencyData LocalCurrency { get; set; }
         [JsonPropertyName("requestedCurrency")]
-        public Requestedcurrency RequestedCurrency { get; set; }
+        public CurrencyData RequestedCurrency { get; set; }
     }
 
-    public class Localcurrency
-    {
-        [JsonPropertyName("currency")]
-        public string Currency { get; set; }
-        [JsonPropertyName("amount")]
-        public float Amount { get; set; }
-        [JsonPropertyName("regularAmount")]
-        public float RegularAmount { get; set; }
-        [JsonPropertyName("discountRate")]
-        public float DiscountRate { get; set; }
-        [JsonPropertyName("discountAmount")]
-        public float DiscountAmount { get; set; }
-        [JsonPropertyName("points")]
-        public int Points { get; set; }
-        [JsonPropertyName("numberOfVouchers")]
-        public int NumberOfVouchers { get; set; }
-        [JsonPropertyName("numberOfBonusCheques")]
-        public int NumberOfBonusCheques { get; set; }
-    }
-
-    public class Requestedcurrency
+    public class CurrencyData
     {
         [JsonPropertyName("currency")]
         public string Currency { get; set; }
@@ -156,9 +134,9 @@ namespace HotelAvailabilityApiService.Models.Availability
     public class Priceperstay
     {
         [JsonPropertyName("localCurrency")]
-        public Localcurrency LocalCurrency { get; set; }
+        public CurrencyData LocalCurrency { get; set; }
         [JsonPropertyName("requestedCurrency")]
-        public Requestedcurrency RequestedCurrency { get; set; }
+        public CurrencyData RequestedCurrency { get; set; }
     }
 
     public class Relationships

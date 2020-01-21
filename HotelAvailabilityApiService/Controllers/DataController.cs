@@ -2,7 +2,6 @@
 using HotelAvailabilityApiService.Models.Hotels;
 using HotelAvailabilityApiService.Services;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static HotelAvailabilityApiService.Services.HotelService;
@@ -26,7 +25,7 @@ namespace HotelAvailabilityApiService.Controllers
             return Json(entitiesResponse);
         }
 
-        private DialogFlowEntities CreateEntitiesModelFromHotelResult(GetHotelsResponse hotelsResult)
+        private static DialogFlowEntities CreateEntitiesModelFromHotelResult(GetHotelsResponse hotelsResult)
         {
             var model = new DialogFlowEntities();
             foreach(var hotel in hotelsResult.Data)

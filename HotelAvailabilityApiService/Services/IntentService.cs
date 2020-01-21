@@ -1,10 +1,8 @@
 using HotelAvailabilityApiService.Models.Availability;
 using HotelAvailabilityApiService.Models.AvailabilityMessageModel;
-using HotelAvailabilityApiService.Models.Hotels;
 using HotelAvailabilityApiService.Models.Request;
 using HotelAvailabilityApiService.Models.Response;
-using System;
-using System.Globalization;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static HotelAvailabilityApiService.Models.AvailabilityMessageModel.AvailabilityMessageModel;
@@ -28,12 +26,7 @@ namespace HotelAvailabilityApiService.Services
             return CreateResponse(messages);
         }
 
-        private void CheckAvailabilityStatus(GetAvailabilityResponse availability)
-        {
-
-        }
-
-        private AvailabilityMessageModel CreateResponseMessages(IntentRequest request, GetAvailabilityResponse availability)
+        private static AvailabilityMessageModel CreateResponseMessages(IntentRequest request, GetAvailabilityResponse availability)
         {
             var roomsAvailable = availability.Data.Any();
             var model = new AvailabilityMessageModel(request, availability);
@@ -86,7 +79,7 @@ namespace HotelAvailabilityApiService.Services
             var response = new IntentResponse
             {
                 FulfillmentText = messages.FulFillmentMessage,
-                FulfillmentMessages = new Models.Response.Fulfillmentmessage[]
+                FulfillmentMessages = new List<Models.Response.Fulfillmentmessage>
                 {
                     new Models.Response.Fulfillmentmessage
                     {
@@ -104,7 +97,7 @@ namespace HotelAvailabilityApiService.Services
                         ExpectUserResponse = false,
                         RichResponse = new Richresponse
                         {
-                            Items = new Item[]
+                            Items = new List<Item>
                             {
                                 new Item
                                 {
