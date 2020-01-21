@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HotelAvailabilityApiService.Models.Availability;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Threading.Tasks;
 
 namespace HotelAvailabilityApiService.Services
@@ -13,9 +15,11 @@ namespace HotelAvailabilityApiService.Services
             _baseUrl = secrets.GetSecret("AvailabilityApiBaseUrl");
         }
 
-        public Task GetAvailabilityForHotelByIdAndStartDateAsync(string id, DateTime startDate)
+        public async Task<GetAvailabilityResponse> GetAvailabilityForHotelByIdAndStartDateAsync(string id, DateTime checkinDate,DateTime checkoutDate)
         {
-            throw new NotImplementedException();
+            var uri = $"{_baseUrl}/availability/availabilities/?language=en&filter[hotel]={id}&filter[checkindate]={checkinDate.ToShortDateString()}&filter[checkoutdate]={checkoutDate.ToShortDateString()}&filter[occupancies]=[1]";
+            var result = await _httpClient.GetAsync<GetAvailabilityResponse>(uri).ConfigureAwait(false);
+            return result;
         }
     }
 }

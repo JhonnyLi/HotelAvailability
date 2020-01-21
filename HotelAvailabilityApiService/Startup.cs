@@ -22,6 +22,7 @@ namespace HotelAvailabilityApiService
             services.AddScoped<IIntentService, IntentService>();
             services.AddSingleton<IHttpService, HttpService>();
             services.AddScoped<IHotelService, HotelService>();
+            services.AddScoped<IAvailabilityService, AvailabilityService>();
             services.AddApplicationInsightsTelemetry();
         }
 
