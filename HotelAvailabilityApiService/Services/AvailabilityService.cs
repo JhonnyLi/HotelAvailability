@@ -22,6 +22,7 @@ namespace HotelAvailabilityApiService.Services
             var occupancies = (int)Math.Round(adults);
             var uri = $"{_baseUrl}/availability/availabilities/?language=en&filter[hotel]={id}&filter[checkindate]={checkinDateString}&filter[checkoutdate]={checkoutDateString}&filter[occupancies]=[{occupancies}]";
             var result = await _httpClient.GetAsync<GetAvailabilityResponse>(uri).ConfigureAwait(false);
+
             return result;
         }
     }

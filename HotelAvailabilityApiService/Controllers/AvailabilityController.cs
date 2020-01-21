@@ -27,7 +27,7 @@ namespace HotelAvailabilityApiService.Controllers
                 
             }
             var request = JsonConvert.DeserializeObject<IntentRequest>(jsonString,new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore});
-            
+
             var response = await _intentService.GetIntentResponse(request);
             return new JsonResult(response);
         }
