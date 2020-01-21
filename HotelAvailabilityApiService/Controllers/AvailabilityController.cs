@@ -1,12 +1,14 @@
 using HotelAvailabilityApiService.Models.Request;
 using HotelAvailabilityApiService.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using Newtonsoft.Json;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace HotelAvailabilityApiService.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class AvailabilityController : ControllerBase
     {
         private readonly IIntentService _intentService;
@@ -16,16 +18,18 @@ namespace HotelAvailabilityApiService.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> RequestIntentResponse([FromBody] IntentRequest request)
+        public async Task<JsonResult> RequestIntentResponse()
         {
-            try
+            string jsonString;
+            using (var reader = new StreamReader(Request.Body))
             {
-                var response = await _intentService.GetIntentResponse(request);
-                return new JsonResult(response);
-            }catch(Exception ex)
-            {
-                return new JsonResult(ex);
+                jsonString = await reader.ReadToEndAsync().ConfigureAwait(false);
+                
             }
+            var request = JsonConvert.DeserializeObject<IntentRequest>(jsonString,new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore});
+            
+            var response = await _intentService.GetIntentResponse(request);
+            return new JsonResult(response);
         }
     }
 }

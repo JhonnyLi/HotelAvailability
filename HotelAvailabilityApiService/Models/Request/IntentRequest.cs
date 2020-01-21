@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace HotelAvailabilityApiService.Models.Request
@@ -33,16 +34,19 @@ namespace HotelAvailabilityApiService.Models.Request
         [JsonPropertyName("intent")]
         public Intent Intent { get; set; }
         [JsonPropertyName("intentDetectionConfidence")]
-        public int IntentDetectionConfidence { get; set; }
+        public double IntentDetectionConfidence { get; set; }
         [JsonPropertyName("languageCode")]
         public string LanguageCode { get; set; }
     }
 
     public class Parameters
     {
-        public string Hotels { get; set; }
-        [JsonPropertyName("datetime")]
-        public DateTimeInfo Datetime { get; set; }
+        [JsonPropertyName("hotel")]
+        public string Hotel { get; set; }
+        [JsonPropertyName("date")]
+        public DateTime Date { get; set; }
+        [JsonPropertyName("leavingdate")]
+        public DateTime LeavingDate { get; set; }
     }
 
     public class DateTimeInfo
