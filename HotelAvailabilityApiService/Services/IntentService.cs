@@ -23,8 +23,8 @@ namespace HotelAvailabilityApiService.Services
         {
             var hotelId = HotelService.GetHotelGuidFromDictionary(request.QueryResult.Parameters.Hotel);
             var parameters = request.QueryResult.Parameters;
-            var availability = await _availabilityService.GetAvailabilityForHotelByIdAndStartDateAsync(hotelId, parameters.Date, parameters.LeavingDate, parameters.Adults);
-            var messages = CreateResponseMessages(request, availability);
+            var availability = !string.IsNullOrEmpty(hotelId) ? await _availabilityService.GetAvailabilityForHotelByIdAndStartDateAsync(hotelId, parameters.Date, parameters.LeavingDate, parameters.Adults) : new GetAvailabilityResponse{Data = new List<AvailabilityData>()};
+            var messages = CreateResponseMessages(request, availability, hotelId);
             return CreateResponse(messages);
 
 
@@ -35,10 +35,17 @@ namespace HotelAvailabilityApiService.Services
             //return CreateResponse(messages);
         }
 
-        private static AvailabilityMessageModel CreateResponseMessages(IntentRequest request, GetAvailabilityResponse availability)
+        private static AvailabilityMessageModel CreateResponseMessages(IntentRequest request, GetAvailabilityResponse availability, string hotelId)
         {
             var roomsAvailable = availability.Data.Any();
             var model = new AvailabilityMessageModel(request, availability);
+
+            if (string.IsNullOrEmpty(hotelId))
+            {
+                model.FulFillmentMessage = $"I could not find {model.HotelName} in my database.";
+
+                return model;
+            }
 
             if (roomsAvailable)
             {

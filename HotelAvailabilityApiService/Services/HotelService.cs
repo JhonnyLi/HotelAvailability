@@ -39,7 +39,7 @@ namespace HotelAvailabilityApiService.Services
 
         public static string GetHotelGuidFromDictionary(string name)
         {
-            return _hotels.SingleOrDefault(s => s.Item1.Equals("Scandic Crown", StringComparison.InvariantCultureIgnoreCase)).Item2;
+            return _hotels.SingleOrDefault(s => s.Item1.Equals(name, StringComparison.InvariantCultureIgnoreCase)).Item2;
         }
 
         public async Task<GetHotelsResponse> GetHotelsWithFieldsAsync(List<HotelAttributeFields> attributes = default)
