@@ -21,11 +21,18 @@ namespace HotelAvailabilityApiService.Services
         }
         public async Task<IntentResponse> GetIntentResponse(IntentRequest request)
         {
-            var hotel = await _hotelService.GetHotelByNameAsync(request.QueryResult.Parameters.Hotel);
+            var hotelId = HotelService.GetHotelGuidFromDictionary(request.QueryResult.Parameters.Hotel);
             var parameters = request.QueryResult.Parameters;
-            var availability = await _availabilityService.GetAvailabilityForHotelByIdAndStartDateAsync(hotel.Id, parameters.Date, parameters.LeavingDate, parameters.Adults);
+            var availability = await _availabilityService.GetAvailabilityForHotelByIdAndStartDateAsync(hotelId, parameters.Date, parameters.LeavingDate, parameters.Adults);
             var messages = CreateResponseMessages(request, availability);
             return CreateResponse(messages);
+
+
+            //var hotel = await _hotelService.GetHotelByNameAsync(request.QueryResult.Parameters.Hotel);
+            //var parameters = request.QueryResult.Parameters;
+            //var availability = await _availabilityService.GetAvailabilityForHotelByIdAndStartDateAsync(hotel.Id, parameters.Date, parameters.LeavingDate, parameters.Adults);
+            //var messages = CreateResponseMessages(request, availability);
+            //return CreateResponse(messages);
         }
 
         private static AvailabilityMessageModel CreateResponseMessages(IntentRequest request, GetAvailabilityResponse availability)
