@@ -1,6 +1,6 @@
 ﻿using HotelAvailabilityApiService.Models.Availability;
-using Newtonsoft.Json.Linq;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HotelAvailabilityApiService.Services
@@ -22,7 +22,7 @@ namespace HotelAvailabilityApiService.Services
             var occupancies = (int)Math.Round(adults);
             var uri = $"{_baseUrl}/availability/availabilities/?language=en&filter[hotel]={id}&filter[checkindate]={checkinDateString}&filter[checkoutdate]={checkoutDateString}&filter[occupancies]=[{occupancies}]";
             var result = await _httpClient.GetAsync<GetAvailabilityResponse>(uri).ConfigureAwait(false);
-
+            result.Data = result.Data.Where(r => r.Attributes.Rates.Any()).ToList();
             return result;
         }
     }

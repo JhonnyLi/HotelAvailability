@@ -47,6 +47,8 @@ namespace HotelAvailabilityApiService.Services
                 return model;
             }
 
+            var ifNumberOfPeopleProvided = request.QueryResult.Parameters.Adults > 1 ? $" for {request.QueryResult.Parameters.Adults} people" : string.Empty;
+
             if (roomsAvailable)
             {
                 var roomsWithRates = availability.Data.Where(d => d.Attributes.Rates.Any()).ToList();
@@ -55,7 +57,7 @@ namespace HotelAvailabilityApiService.Services
                 var (bestRate, pricePerNight) = allRates.First();
                 
                 var roomString = availability.Data.Count == 1 ? "a room" : "rooms";
-                model.FulFillmentMessage = $"{model.HotelName} has {roomString} available between {model.CheckInDate} and {model.CheckoutDate}. The best price is {pricePerNight.PricePerNight.LocalCurrency.Amount}Sek per night.";
+                model.FulFillmentMessage = $"{model.HotelName} has {roomString} available{ifNumberOfPeopleProvided} between {model.CheckInDate} and {model.CheckoutDate}. The best price is {pricePerNight.PricePerNight.LocalCurrency.Amount}Sek per night.";
                 var cardMessage = new CardMessage
                 {
                     Title = $"{model.HotelName} room availability",
@@ -73,7 +75,8 @@ namespace HotelAvailabilityApiService.Services
             }
             else
             {
-                model.FulFillmentMessage = $"{model.HotelName} has no available rooms between {model.CheckInDate} and {model.CheckoutDate}.";
+                
+                model.FulFillmentMessage = $"{model.HotelName} has no available rooms{ifNumberOfPeopleProvided} between {model.CheckInDate} and {model.CheckoutDate}.";
                 var cardMessage = new CardMessage
                 {
                     Title = $"{model.HotelName} room availability",
