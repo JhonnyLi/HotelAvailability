@@ -21,18 +21,14 @@ namespace HotelAvailabilityApiService.Services
         }
         public async Task<IntentResponse> GetIntentResponse(IntentRequest request)
         {
+            //TODO: Figure out fastest/best way to handle all hotel data. Maybe use guids directly in the entitys ?
+            //var hotel = await _hotelService.GetHotelByNameAsync(request.QueryResult.Parameters.Hotel);
+            //var hotelId = hotel?.Id;
             var hotelId = HotelService.GetHotelGuidFromDictionary(request.QueryResult.Parameters.Hotel);
             var parameters = request.QueryResult.Parameters;
             var availability = !string.IsNullOrEmpty(hotelId) ? await _availabilityService.GetAvailabilityForHotelByIdAndStartDateAsync(hotelId, parameters.Date, parameters.LeavingDate, parameters.Adults) : new GetAvailabilityResponse{Data = new List<AvailabilityData>()};
             var messages = CreateResponseMessages(request, availability, hotelId);
             return CreateResponse(messages);
-
-
-            //var hotel = await _hotelService.GetHotelByNameAsync(request.QueryResult.Parameters.Hotel);
-            //var parameters = request.QueryResult.Parameters;
-            //var availability = await _availabilityService.GetAvailabilityForHotelByIdAndStartDateAsync(hotel.Id, parameters.Date, parameters.LeavingDate, parameters.Adults);
-            //var messages = CreateResponseMessages(request, availability);
-            //return CreateResponse(messages);
         }
 
         private static AvailabilityMessageModel CreateResponseMessages(IntentRequest request, GetAvailabilityResponse availability, string hotelId)
